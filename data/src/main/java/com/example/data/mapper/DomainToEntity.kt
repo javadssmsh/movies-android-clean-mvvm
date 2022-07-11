@@ -7,6 +7,6 @@ import com.example.domain.model.Movie
 fun Movie.toEntity():MovieEntity{
     return MovieEntity(
         title = title!!,
-        year, imdbID, type, imageUrl
+        year, imdbID, type, imageUrl!!
     )
 }

@@ -12,7 +12,7 @@ class MoviesRepositoryUseCase @Inject constructor(private val repository: IMovie
 
     suspend fun deleteMovie(movie: Movie) = repository.deleteMovie(movie)
 
-    suspend fun getAllMovies() = repository.getAllMovies()
+    operator fun invoke() = repository.getAllMovies()
 
 
 }

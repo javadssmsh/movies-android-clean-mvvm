@@ -1,17 +1,17 @@
 package com.example.domain.repository
 
-import com.example.domain.base.Result
 import com.example.domain.model.Movie
+import kotlinx.coroutines.flow.Flow
 
 interface IMovieRepository {
 
-    suspend fun getBatmanMovies(): Result<List<Movie>>
+    suspend fun getBatmanMovies()
 
     suspend fun insertMovie(movie: Movie)
 
     suspend fun deleteMovie(movie: Movie)
 
-    suspend fun getAllMovies() : List<Movie>
+     fun getAllMovies() : Flow<List<Movie>>
 
 
 }

@@ -2,12 +2,13 @@ package com.example.data.db.dao
 
 import androidx.room.*
 import com.example.data.model.entity.MovieEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MovieDao {
 
     @Query("SELECT * FROM movie_entity")
-    suspend fun getAllMovies(): List<MovieEntity>
+    fun getAllMovies(): Flow<List<MovieEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMovie(movie: MovieEntity)

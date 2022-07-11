@@ -4,13 +4,14 @@ import com.example.data.source.MoviesDataSource
 import com.example.domain.base.Result
 import com.example.domain.model.Movie
 import com.example.domain.repository.IMovieRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class MovieRepository @Inject constructor(private val moviesDataSource: MoviesDataSource) :
     IMovieRepository {
 
 
-    override suspend fun getBatmanMovies(): Result<List<Movie>> {
+    override suspend fun getBatmanMovies() {
         return moviesDataSource.getBatmanMovies()
     }
 
@@ -22,7 +23,7 @@ class MovieRepository @Inject constructor(private val moviesDataSource: MoviesDa
         return moviesDataSource.deleteMovie(movie)
     }
 
-    override suspend fun getAllMovies() : List<Movie>{
+    override  fun getAllMovies() : Flow<List<Movie>> {
         return moviesDataSource.getAllMovies()
     }
 

@@ -7,6 +7,8 @@ import com.example.data.mapper.toEntity
 import com.example.domain.base.Error
 import com.example.domain.base.Result
 import com.example.domain.model.Movie
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class MoviesDataSource @Inject constructor(
@@ -14,12 +16,13 @@ class MoviesDataSource @Inject constructor(
     private val movieDao: MovieDao
 ) {
 
-    suspend fun getBatmanMovies(): Result<List<Movie>> {
-        val result = moviesApiService.getBatmanMovies()
-        return when {
+    suspend fun getBatmanMovies() {
+        val result = moviesApiService.getBatmanMovies(apikey = "3e974fca" , name = "batman")
+        when {
             result.isSuccessful -> {
                 result.body().let {
-                    Result.Success(it?.Search!!.map { movieItem ->  movieItem.toDomain()})
+                    //save to db
+                    it?.Search?.map { movieItem -> movieDao.insertMovie(movieItem.toEntity()) }
                 }
             }
             else -> Result.Error(Error.Internet)
@@ -34,8 +37,8 @@ class MoviesDataSource @Inject constructor(
         movieDao.deleteMovie(movie.toEntity())
     }
 
-    suspend fun getAllMovies() : List<Movie>{
-        return movieDao.getAllMovies().map { item->item.toDomain() }
+    fun getAllMovies(): Flow<List<Movie>> {
+        return movieDao.getAllMovies().map { list -> list.map { item -> item.toDomain() } }
     }
 
 
