@@ -17,15 +17,18 @@ class MoviesDataSource @Inject constructor(
 ) {
 
     suspend fun getBatmanMovies() {
-        val result = moviesApiService.getBatmanMovies(apikey = "3e974fca" , name = "batman")
-        when {
-            result.isSuccessful -> {
-                result.body().let {
-                    //save to db
-                    it?.Search?.map { movieItem -> movieDao.insertMovie(movieItem.toEntity()) }
+        try {
+            val result = moviesApiService.getBatmanMovies(apikey = "3e974fca" , name = "batman")
+            when {
+                result.isSuccessful -> {
+                    result.body().let {
+                        //save to db
+                        it?.Search?.map { movieItem -> movieDao.insertMovie(movieItem.toEntity()) }
+                    }
                 }
+                else -> Result.Error(Error.Internet)
             }
-            else -> Result.Error(Error.Internet)
+        } catch (e: Exception) {
         }
     }
 

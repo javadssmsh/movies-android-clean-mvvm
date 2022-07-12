@@ -2,6 +2,7 @@ package com.example.data.di
 
 import com.example.data.BASE_URL
 import com.example.data.api.MoviesApiService
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
