@@ -18,7 +18,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var moviesList: RecyclerView
 
     private val moviesAdapter by lazy {
-        MovieListAdapter(onClick = {})
+        MovieListAdapter(onClick = {
+            MovieDetailActivity.showActivity(this@MainActivity, it.imdbID!!)
+        })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

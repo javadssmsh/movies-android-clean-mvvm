@@ -39,6 +39,9 @@ class MovieListAdapter(val onClick: (Movie) -> Unit) :
         fun bind(movie: Movie, position: Int) {
             binding.movie = movie
             binding.executePendingBindings()
+            binding.root.setOnClickListener {
+                onClick(movie)
+            }
         }
     }
 

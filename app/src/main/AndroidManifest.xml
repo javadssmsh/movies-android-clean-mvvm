@@ -17,7 +17,7 @@
         android:theme="@style/Theme.MoviesCleanMVVM"
         tools:targetApi="31">
         <activity
-            android:name=".MovieDetailActivity"
+            android:name=".view.activity.MovieDetailActivity"
             android:exported="false" />
         <activity
             android:name=".view.activity.MainActivity"

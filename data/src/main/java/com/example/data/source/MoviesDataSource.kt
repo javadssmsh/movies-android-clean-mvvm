@@ -7,8 +7,10 @@ import com.example.data.mapper.toEntity
 import com.example.domain.base.Error
 import com.example.domain.base.Result
 import com.example.domain.model.Movie
+import com.example.domain.model.MovieDetail
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import retrofit2.Response
 import javax.inject.Inject
 
 class MoviesDataSource @Inject constructor(
@@ -18,7 +20,7 @@ class MoviesDataSource @Inject constructor(
 
     suspend fun getBatmanMovies() {
         try {
-            val result = moviesApiService.getBatmanMovies(apikey = "3e974fca" , name = "batman")
+            val result = moviesApiService.getBatmanMovies(apikey = "3e974fca", name = "batman")
             when {
                 result.isSuccessful -> {
                     result.body().let {
@@ -29,6 +31,22 @@ class MoviesDataSource @Inject constructor(
                 else -> Result.Error(Error.Internet)
             }
         } catch (e: Exception) {
+        }
+    }
+
+    suspend fun getMovieDetail(imdbId: String): Result<MovieDetail> {
+        return try {
+            val result = moviesApiService.getMovieDetail(apikey = "3e974fca", imdbId = imdbId)
+            when {
+                result.isSuccessful -> {
+                    result.body().let {
+                        Result.Success(it!!.toDomain())
+                    }
+                }
+                else -> Result.Error(Error.Internet)
+            }
+        } catch (e: Exception) {
+            return Result.Error(Error.Internet)
         }
     }
 
