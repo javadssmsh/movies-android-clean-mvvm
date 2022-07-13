@@ -36,6 +36,7 @@ data class MovieDetailResponse(
     val Awards :String,
     val Poster :String,
     val Type :String,
+    val imdbID :String,
     val Ratings : List<MovieRatingResponse>
 
 )

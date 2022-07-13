@@ -16,5 +16,7 @@ class MoviesRepositoryUseCase @Inject constructor(private val repository: IMovie
 
     suspend fun getMovieDetail(imdbId: String) = repository.getMovieDetail(imdbId)
 
+    operator fun invoke(imdbId: String) = repository.getMovieDetailDb(imdbId)
+
 
 }

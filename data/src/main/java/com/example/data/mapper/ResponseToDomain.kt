@@ -30,7 +30,6 @@ fun MovieDetailResponse.toDomain(): MovieDetail {
         awards = Awards,
         poster = Poster,
         type = Type,
-        ratings = Ratings.map { item -> item.toDomain() }
     )
 }
 

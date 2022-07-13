@@ -13,9 +13,10 @@ interface IMovieRepository {
 
     suspend fun deleteMovie(movie: Movie)
 
-    suspend fun getMovieDetail(imdbId: String):Result<MovieDetail>
+    suspend fun getMovieDetail(imdbId: String)
 
      fun getAllMovies() : Flow<List<Movie>>
 
+     fun getMovieDetailDb(imdbId: String) : Flow<List<MovieDetail>>
 
 }

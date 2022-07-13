@@ -9,6 +9,8 @@ import com.example.domain.model.Movie
 import com.example.domain.model.MovieDetail
 import com.example.domain.usecases.MoviesRepositoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,23 +19,34 @@ class MovieDetailViewModel @Inject constructor(private val useCase: MoviesReposi
     ViewModel() {
 
     lateinit var imdbId: String
+    val isLoading: MutableLiveData<Boolean> = MutableLiveData()
+
 
     private val _movieDetail: MutableLiveData<MovieDetail> = MutableLiveData()
     val movieDetail: LiveData<MovieDetail> = _movieDetail
 
     fun getMovieDetail() {
         viewModelScope.launch {
-            when (val result = useCase.getMovieDetail(imdbId)) {
-                is Result.Success -> {
-                    result.data.let {
-                        _movieDetail.value = it
-                    }
-                }
-                is Result.Error -> {
-
-                }
-            }
+            useCase.getMovieDetail(imdbId)
         }
+    }
+
+    fun getMovieDetailDb(){
+        startLoading()
+        viewModelScope.launch {
+            useCase.invoke(imdbId).also { stopLoading() }.onEach {
+                if (!it.isNullOrEmpty())
+                    _movieDetail.value=it[0]
+            }.launchIn(viewModelScope)
+        }
+    }
+
+    private fun stopLoading() {
+        isLoading.value = false
+    }
+
+    private fun startLoading() {
+        isLoading.value = true
     }
 
 }

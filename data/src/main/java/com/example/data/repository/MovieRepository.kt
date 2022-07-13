@@ -24,13 +24,17 @@ class MovieRepository @Inject constructor(private val moviesDataSource: MoviesDa
         return moviesDataSource.deleteMovie(movie)
     }
 
-    override suspend fun getMovieDetail(imdbId: String): Result<MovieDetail> {
+    override suspend fun getMovieDetail(imdbId: String) {
         return moviesDataSource.getMovieDetail(imdbId)
     }
 
 
     override fun getAllMovies(): Flow<List<Movie>> {
         return moviesDataSource.getAllMovies()
+    }
+
+    override fun getMovieDetailDb(imdbId: String): Flow<List<MovieDetail>> {
+        return moviesDataSource.getMovieDetailDb(imdbId)
     }
 
 

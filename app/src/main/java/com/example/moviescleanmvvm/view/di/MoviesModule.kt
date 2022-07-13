@@ -2,6 +2,7 @@ package com.example.moviescleanmvvm.view.di
 
 import com.example.data.api.MoviesApiService
 import com.example.data.db.dao.MovieDao
+import com.example.data.db.dao.MovieDetailDao
 import com.example.data.repository.MovieRepository
 import com.example.data.source.MoviesDataSource
 import com.example.domain.repository.IMovieRepository
@@ -34,6 +35,7 @@ class NewsModule {
     @Provides
     fun provideMovieDataSource(
         moviesApiService: MoviesApiService,
-        movieDao: MovieDao
-    ) = MoviesDataSource(moviesApiService, movieDao)
+        movieDao: MovieDao,
+        movieDetailDao: MovieDetailDao
+    ) = MoviesDataSource(moviesApiService, movieDao, movieDetailDao)
 }

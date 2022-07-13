@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.example.data.db.AppDatabase
 import com.example.data.db.dao.MovieDao
+import com.example.data.db.dao.MovieDetailDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,5 +32,10 @@ object DatabaseModule {
     @Provides
     fun provideMovieDao(appDatabase: AppDatabase): MovieDao {
         return appDatabase.MovieDao()
+    }
+
+    @Provides
+    fun provideMovieDetailDao(appDatabase: AppDatabase): MovieDetailDao {
+        return appDatabase.MovieDetailDao()
     }
 }

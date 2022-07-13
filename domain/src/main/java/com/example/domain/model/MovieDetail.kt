@@ -15,7 +15,6 @@ data class MovieDetail(
     val awards :String,
     val poster :String,
     val type :String,
-    val ratings : List<MovieRating>
 
 )
 

@@ -1,7 +1,9 @@
 package com.example.data.source
 
+import android.util.Log
 import com.example.data.api.MoviesApiService
 import com.example.data.db.dao.MovieDao
+import com.example.data.db.dao.MovieDetailDao
 import com.example.data.mapper.toDomain
 import com.example.data.mapper.toEntity
 import com.example.domain.base.Error
@@ -10,12 +12,12 @@ import com.example.domain.model.Movie
 import com.example.domain.model.MovieDetail
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import retrofit2.Response
 import javax.inject.Inject
 
 class MoviesDataSource @Inject constructor(
     private val moviesApiService: MoviesApiService,
-    private val movieDao: MovieDao
+    private val movieDao: MovieDao,
+    private val movieDetailDao: MovieDetailDao
 ) {
 
     suspend fun getBatmanMovies() {
@@ -34,19 +36,21 @@ class MoviesDataSource @Inject constructor(
         }
     }
 
-    suspend fun getMovieDetail(imdbId: String): Result<MovieDetail> {
+    suspend fun getMovieDetail(imdbId: String) {
         return try {
             val result = moviesApiService.getMovieDetail(apikey = "3e974fca", imdbId = imdbId)
             when {
                 result.isSuccessful -> {
                     result.body().let {
-                        Result.Success(it!!.toDomain())
+                        // save to db
+                        if (it != null) {
+                            movieDetailDao.insertMovieDetail(it.toEntity())
+                        }
                     }
                 }
-                else -> Result.Error(Error.Internet)
+                else -> {}
             }
         } catch (e: Exception) {
-            return Result.Error(Error.Internet)
         }
     }
 
@@ -60,6 +64,11 @@ class MoviesDataSource @Inject constructor(
 
     fun getAllMovies(): Flow<List<Movie>> {
         return movieDao.getAllMovies().map { list -> list.map { item -> item.toDomain() } }
+    }
+
+    fun getMovieDetailDb(imdbId: String) : Flow<List<MovieDetail>>{
+        Log.d("getMovieDetailDb", "getMovieDetailDb: ")
+        return movieDetailDao.getMovieDetail(imdbId).map { list-> list.map { item-> item.toDomain() } }
     }
 
 
